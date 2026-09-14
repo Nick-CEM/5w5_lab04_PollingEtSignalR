@@ -55,7 +55,7 @@ export default function TaskView({ onTaskAdd, onTaskToggle, tasks }: TaskViewPro
                                 type="checkbox"
                                 id={`task-${task.id}`}
                                 checked={task.completed}
-                                disabled={task.completed}
+                                //disabled={task.completed}
                                 onChange={(e) => handleTaskToggle(task.id)}
                                 className="w-4 h-4 text-blue-600 rounded"
                             />

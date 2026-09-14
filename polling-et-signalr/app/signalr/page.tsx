@@ -16,21 +16,22 @@ export default function Home() {
     }, []);
 
   function connecttohub() {
-    let testTasks = new Array<UselessTask>(
-          { id: 1, text: "Test Task 1", completed: false },
-          { id: 2, text: "Test Task 2", completed: true });
-        setTasks(testTasks);
     // TODO On doit commencer par créer la connexion vers le Hub
-    // TODO On peut commencer à écouter pour les évènements qui vont déclencher des callbacks
-    // TODO On doit ensuite se connecter
     let newHubConnection = new HubConnectionBuilder()
                               .withUrl("https://localhost:7289/MyHub")
                               .build();
 
+    // TODO On peut commencer à écouter pour les évènements qui vont déclencher des callbacks
     newHubConnection.on("TaskList", (data) => {
+      console.log(data)
+      setTasks(data)
+    })
+
+    newHubConnection.on("UserCount", (data) => {
       console.log(data)
     })
 
+    // TODO On doit ensuite se connecter
     newHubConnection
         .start()
         .then(() => {
@@ -43,13 +44,16 @@ export default function Home() {
 
   function onTaskToggle(id: number) {
     // TODO On invoke la méthode pour compléter une tâche sur le serveur
-    let tasksCopy : UselessTask[] = [...tasks];    
-    tasksCopy.find(task => task.id === id)!.completed = true;
-    setTasks(tasksCopy);
+    // CompletedTask est la méthode du back-end à laquelle on fait référence
+    // donc écrire PAREIL
+    hubConnection!.invoke("CompletedTask", id)
   }
 
-  function handleTaskAdd() {
+  function handleTaskAdd(taskName: string) {
     // TODO On invoke la méthode pour ajouter une tâche sur le serveur
+    // AddTask est la méthode du back-end à laquelle on fait référence
+    // donc écrire PAREIL
+    hubConnection!.invoke("AddTask", taskName)
   }
 
   return (
