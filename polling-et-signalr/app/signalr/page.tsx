@@ -10,6 +10,7 @@ export default function Home() {
 
   const [tasks, setTasks] = React.useState<UselessTask[]>([]);
   const [hubConnection, setHubConnection] = React.useState<HubConnection>();
+  const [nbUsers, setNbUsers] = React.useState<number>(0);
 
   useEffect(() => {
       connecttohub();
@@ -29,6 +30,7 @@ export default function Home() {
 
     newHubConnection.on("UserCount", (data) => {
       console.log(data)
+      setNbUsers(data)
     })
 
     // TODO On doit ensuite se connecter
@@ -64,6 +66,7 @@ export default function Home() {
           onTaskAdd={handleTaskAdd}
           onTaskToggle={onTaskToggle}
         />
+        <p>nombre d'utilisateurs connectés : {nbUsers}</p>
     </div>
   );
 }
